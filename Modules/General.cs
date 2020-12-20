@@ -29,6 +29,8 @@ namespace EssentiBot.Modules
         [Command("ping")]
         public async Task PingAsync()
         {
+            await Context.Channel.TriggerTypingAsync();
+
             await Context.Channel.SendMessageAsync("Pong!");
             _logger.LogInformation($"{Context.User.Username} executed the ping command!");
         }
@@ -36,6 +38,8 @@ namespace EssentiBot.Modules
         [Command("echo")]
         public async Task EchoAsync([Remainder] string text)
         {
+            await Context.Channel.TriggerTypingAsync();
+
             await ReplyAsync(text);
             _logger.LogInformation($"{Context.User.Username} executed the echo command!");
         }
@@ -43,6 +47,8 @@ namespace EssentiBot.Modules
         [Command("math")]
         public async Task MathAsync([Remainder] string math)
         {
+            await Context.Channel.TriggerTypingAsync();
+
             var dt = new DataTable();
             var result = dt.Compute(math, null);
 
@@ -53,7 +59,9 @@ namespace EssentiBot.Modules
         [Command("info")]
         public async Task Info(SocketGuildUser user = null)
         {
-            if(user == null)
+            await Context.Channel.TriggerTypingAsync();
+
+            if (user == null)
             {
                 var builder = new EmbedBuilder()
                     .WithThumbnailUrl(Context.User.GetAvatarUrl() ?? Context.User.GetDefaultAvatarUrl())
@@ -86,6 +94,8 @@ namespace EssentiBot.Modules
         [Command("server")]
         public async Task Server()
         {
+            await Context.Channel.TriggerTypingAsync();
+
             var builder = new EmbedBuilder()
                 .WithThumbnailUrl(Context.Guild.IconUrl)
                 .WithDescription("In this message you can find some information about the current server.")
@@ -101,6 +111,8 @@ namespace EssentiBot.Modules
         [Command("image", RunMode = RunMode.Async)]
         public async Task Image(SocketGuildUser user)
         {
+            await Context.Channel.TriggerTypingAsync();
+
             var path = await _images.CreateImageAsync(user);
             await Context.Channel.SendFileAsync(path);
             File.Delete(path);
@@ -111,6 +123,7 @@ namespace EssentiBot.Modules
         public async Task Rank([Remainder]string identifier)
         {
             await Context.Channel.TriggerTypingAsync();
+
             var ranks = await _ranksHelper.GetRanksAsync(Context.Guild);
 
             IRole role;

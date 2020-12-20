@@ -15,6 +15,8 @@ namespace EssentiBot.Modules
         [Alias("reddit")]
         public async Task Meme(string subreddit = null)
         {
+            await Context.Channel.TriggerTypingAsync();
+
             var client = new HttpClient();
             var result = await client.GetStringAsync($"https://reddit.com/r/{subreddit ?? "memes"}/random.json?limit=1");
             if (!result.StartsWith("["))
