@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -7,6 +8,7 @@ using Discord;
 using Discord.Addons.Hosting;
 using Discord.Commands;
 using Discord.WebSocket;
+using EssentiBot.Common;
 using EssentiBot.Utilities;
 using Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -20,17 +22,18 @@ namespace EssentiBot.Services
         private readonly CommandService _service;
         private readonly IConfiguration _config;
         private readonly Servers _servers;
-        private readonly AutoRolesHelper _autoRolesHelper;
+        private readonly ServerHelper _serverHelper;
         private readonly Images _images;
+        public static List<Mute> Mutes = new List<Mute>();
 
-        public CommandHandler(DiscordSocketClient client, CommandService service, IConfiguration config, IServiceProvider provider, Servers servers, AutoRolesHelper autoRolesHelper, Images images)
+        public CommandHandler(DiscordSocketClient client, CommandService service, IConfiguration config, IServiceProvider provider, Servers servers, ServerHelper serverHelper, Images images)
         {
             _provider = provider;
             _client = client;
             _service = service;
             _config = config;
             _servers = servers;
-            _autoRolesHelper = autoRolesHelper;
+            _serverHelper = serverHelper;
             _images = images;
         }
 
@@ -39,8 +42,53 @@ namespace EssentiBot.Services
             _client.MessageReceived += OnMessageReceived;
             _client.UserJoined += OnUserJoined;
 
+            var newTask = new Task(async () => await MuteHandler());
+            newTask.Start();
+
             _service.CommandExecuted += OnCommandExecuted;
             await _service.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
+        }
+
+        private async Task MuteHandler()
+        {
+            List<Mute> Remove = new List<Mute>();
+            foreach(var mute in Mutes)
+            {
+                if (DateTime.Now < mute.End)
+                    continue;
+
+                var guild = _client.GetGuild(mute.Guild.Id);
+
+                if (guild.GetRole(mute.Role.Id) == null)
+                {
+                    Remove.Add(mute);
+                    continue;
+                }
+
+                var role = guild.GetRole(mute.Role.Id);
+
+                if(guild.GetUser(mute.User.Id) == null)
+                {
+                    Remove.Add(mute);
+                    continue;
+                }
+
+                var user = guild.GetUser(mute.User.Id);
+
+                if(role.Position > guild.CurrentUser.Hierarchy)
+                {
+                    Remove.Add(mute);
+                    continue;
+                }
+
+                await user.RemoveRoleAsync(mute.Role);
+                Remove.Add(mute);
+            }
+
+            Mutes = Mutes.Except(Remove).ToList();
+
+            await Task.Delay(1 * 60 * 1000);
+            await MuteHandler();
         }
 
         private async Task OnUserJoined(SocketGuildUser arg)
@@ -51,7 +99,7 @@ namespace EssentiBot.Services
 
         private async Task HandleUserJoined(SocketGuildUser arg)
         {
-            var roles = await _autoRolesHelper.GetAutoRolesAsync(arg.Guild);
+            var roles = await _serverHelper.GetAutoRolesAsync(arg.Guild);
             if (roles.Count > 0)         
                 await arg.AddRolesAsync(roles);
 
@@ -71,6 +119,7 @@ namespace EssentiBot.Services
 
             await channel.SendFileAsync(path, null);
             System.IO.File.Delete(path);
+            await _serverHelper.SendLogAsync(arg.Guild, "User joined", $"{arg.Username} has joined the server!");
         }
 
         private async Task OnMessageReceived(SocketMessage arg)
@@ -88,7 +137,7 @@ namespace EssentiBot.Services
 
         private async Task OnCommandExecuted(Optional<CommandInfo> command, ICommandContext context, IResult result)
         {
-            if (command.IsSpecified && !result.IsSuccess) await context.Channel.SendMessageAsync($"Error: {result}");
+            if (command.IsSpecified && !result.IsSuccess) await (context.Channel as ISocketMessageChannel).SendErrorAsync("Error!", result.ErrorReason);
         }
     }
 }

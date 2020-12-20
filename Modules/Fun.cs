@@ -6,6 +6,8 @@ using System.Text;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Discord;
+using Discord.WebSocket;
+using EssentiBot.Common;
 
 namespace EssentiBot.Modules
 {
@@ -21,7 +23,8 @@ namespace EssentiBot.Modules
             var result = await client.GetStringAsync($"https://reddit.com/r/{subreddit ?? "memes"}/random.json?limit=1");
             if (!result.StartsWith("["))
             {
-                await Context.Channel.SendMessageAsync("This subreddit does not exist!");
+                //await Context.Channel.SendMessageAsync("This subreddit does not exist!");
+                await (Context.Channel as ISocketMessageChannel).SendErrorAsync("Error!", "This subreddit does not exist!");
                 return;
             }
             JArray arr = JArray.Parse(result);
