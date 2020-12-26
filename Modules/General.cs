@@ -19,12 +19,14 @@ namespace EssentiBot.Modules
         private readonly ILogger<General> _logger;
         private readonly Images _images;
         private readonly ServerHelper _serverHelper;
+        private readonly DiscordSocketClient _client;
 
-        public General(ILogger<General> logger, Images images, ServerHelper serverHelper)
+        public General(ILogger<General> logger, Images images, ServerHelper serverHelper, DiscordSocketClient client)
         {
             _logger = logger;
             _images = images;
             _serverHelper = serverHelper;
+            _client = client;
         }
             
 
@@ -33,8 +35,8 @@ namespace EssentiBot.Modules
         {
             await Context.Channel.TriggerTypingAsync();
 
-            await Context.Channel.SendMessageAsync("Pong!");
-            _logger.LogInformation($"{Context.User.Username} executed the ping command!");
+            await Context.Channel.SendSuccessAsync("Pong!", $"{_client.Latency} ms");
+            //_logger.LogInformation($"{Context.User.Username} executed the ping command!");
             await _serverHelper.SendLogAsync(Context.Guild, "Command executed", $"{Context.User.Username} executed the ping command!");
         }
 
@@ -44,7 +46,7 @@ namespace EssentiBot.Modules
             await Context.Channel.TriggerTypingAsync();
 
             await ReplyAsync(text);
-            _logger.LogInformation($"{Context.User.Username} executed the echo command!");
+            //_logger.LogInformation($"{Context.User.Username} executed the echo command!");
             await _serverHelper.SendLogAsync(Context.Guild, "Command executed", $"{Context.User.Username} executed the echo command!");
         }
 
@@ -57,7 +59,7 @@ namespace EssentiBot.Modules
             var result = dt.Compute(math, null);
 
             await Context.Channel.SendSuccessAsync("Success", $"The result was {result}.");
-            _logger.LogInformation($"{Context.User.Username} executed the math command!");
+            //_logger.LogInformation($"{Context.User.Username} executed the math command!");
             await _serverHelper.SendLogAsync(Context.Guild, "Command executed", $"{Context.User.Username} executed the math command!");
         }
 

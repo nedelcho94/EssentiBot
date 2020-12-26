@@ -12,6 +12,7 @@ using EssentiBot.Common;
 using EssentiBot.Utilities;
 using Infrastructure;
 using Microsoft.Extensions.Configuration;
+using Victoria;
 
 namespace EssentiBot.Services
 {
@@ -25,8 +26,9 @@ namespace EssentiBot.Services
         private readonly ServerHelper _serverHelper;
         private readonly Images _images;
         public static List<Mute> Mutes = new List<Mute>();
+        private readonly LavaNode _lavaNode;
 
-        public CommandHandler(DiscordSocketClient client, CommandService service, IConfiguration config, IServiceProvider provider, Servers servers, ServerHelper serverHelper, Images images)
+        public CommandHandler(DiscordSocketClient client, CommandService service, IConfiguration config, IServiceProvider provider, Servers servers, ServerHelper serverHelper, Images images, LavaNode lavaNode)
         {
             _provider = provider;
             _client = client;
@@ -35,18 +37,51 @@ namespace EssentiBot.Services
             _servers = servers;
             _serverHelper = serverHelper;
             _images = images;
+            _lavaNode = lavaNode;
         }
 
         public override async Task InitializeAsync(CancellationToken cancellationToken)
         {
             _client.MessageReceived += OnMessageReceived;
             _client.UserJoined += OnUserJoined;
+            _client.Ready += OnReadyAsync;
+            _client.ReactionAdded += OnReactionAsync;
+            _client.JoinedGuild += OnJoinedGuild;
+            _client.LeftGuild += OnLeftGuild;
 
             var newTask = new Task(async () => await MuteHandler());
             newTask.Start();
 
             _service.CommandExecuted += OnCommandExecuted;
             await _service.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
+        }
+
+        private async Task OnLeftGuild(SocketGuild arg)
+        {
+            await _client.SetGameAsync($"over {_client.Guilds.Count} servers", null, ActivityType.Watching);
+        }
+
+        private async Task OnJoinedGuild(SocketGuild arg)
+        {
+            await _client.SetGameAsync($"over {_client.Guilds.Count} servers", null, ActivityType.Watching);
+        }
+
+        private async Task OnReactionAsync(Cacheable<IUserMessage, ulong> arg1, ISocketMessageChannel arg2, SocketReaction arg3)
+        {
+            if (arg3.MessageId != 792104075118379029) return;
+
+            if (arg3.Emote.Name != "✅") return;
+
+            var channel = await (arg2 as ITextChannel).Guild.GetTextChannelAsync(790276024326684672);
+            await channel.SendMessageAsync($"{arg3.User.Value.Mention} replied with the ✅");
+        }
+
+        private async Task OnReadyAsync()
+        {
+            if (!_lavaNode.IsConnected)
+            {
+               await _lavaNode.ConnectAsync();
+            }
         }
 
         private async Task MuteHandler()

@@ -21,6 +21,7 @@ namespace EssentiBot.Modules
 
             var client = new HttpClient();
             var result = await client.GetStringAsync($"https://reddit.com/r/{subreddit ?? "memes"}/random.json?limit=1");
+            
             if (!result.StartsWith("["))
             {
                 //await Context.Channel.SendMessageAsync("This subreddit does not exist!");
@@ -29,6 +30,12 @@ namespace EssentiBot.Modules
             }
             JArray arr = JArray.Parse(result);
             JObject post = JObject.Parse(arr[0]["data"]["children"][0]["data"].ToString());
+
+            if(post["over_18"].ToString() == "True" && !(Context.Channel as ITextChannel).IsNsfw)
+            {
+                await (Context.Channel as ISocketMessageChannel).SendErrorAsync("Error!", "The subreddit contains NSFW content, while this is a SFW channel!");
+                return;
+            }
 
             var builder = new EmbedBuilder()
                 .WithImageUrl(post["url"].ToString())

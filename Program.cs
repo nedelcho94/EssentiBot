@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using EssentiBot.Services;
 using Infrastructure;
 using EssentiBot.Utilities;
+using Victoria;
+using Discord.Addons.Interactive;
 
 namespace EssentiBot
 {
@@ -56,6 +58,11 @@ namespace EssentiBot
                     services
                     .AddHostedService<CommandHandler>()
                     .AddDbContext<EssentiBotContext>()
+                    .AddLavaNode(x =>
+                    {
+                        x.SelfDeaf = true;
+                    })
+                    .AddSingleton<InteractiveService>()
                     .AddSingleton<Servers>()
                     .AddSingleton<Images>()
                     .AddSingleton<Ranks>()

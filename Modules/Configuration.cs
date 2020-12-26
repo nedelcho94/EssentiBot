@@ -60,7 +60,7 @@ namespace EssentiBot.Modules
 
             await Context.Channel.TriggerTypingAsync();
 
-            string desctiption = "This message lists all available ranks.\nIn order to add a rank, you can use the nme or ID of the rank.";
+            string desctiption = "This message lists all available ranks.\nIn order to add a rank, you can use the name or ID of the rank.";
             foreach (var rank in ranks)
             {
                 desctiption += $"\n{rank.Mention} ({rank.Id})";
