@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 using EssentiBot.Common;
 using System;
 using System.Collections.Generic;
@@ -8,19 +9,23 @@ using System.Text;
 using System.Threading.Tasks;
 using Victoria;
 using Victoria.Enums;
+using Victoria.EventArgs;
 
 namespace EssentiBot.Modules
 {
     public class Music : ModuleBase<SocketCommandContext>
     {
         private readonly LavaNode _lavaNode;
+        private readonly DiscordSocketClient _client;
 
-        public Music(LavaNode lavaNode)
+        public Music(LavaNode lavaNode, DiscordSocketClient client)
         {
             _lavaNode = lavaNode;
+            _client = client;
         }
 
         [Command("join", RunMode = RunMode.Async)]
+        [Summary("Invites the bot to your voice channel.")]
         public async Task JoinAsync()
         {
             if (_lavaNode.HasPlayer(Context.Guild))
@@ -50,6 +55,7 @@ namespace EssentiBot.Modules
         }
 
         [Command("disconnect", RunMode = RunMode.Async)]
+        [Summary("Removes the bot from your voice channel.")]
         public async Task DisconnectAsync()
         {
             if (!_lavaNode.HasPlayer(Context.Guild))
@@ -80,9 +86,10 @@ namespace EssentiBot.Modules
 
         [Command("play", RunMode = RunMode.Async)]
         [Alias("p")]
-        public async Task PlayAsync([Remainder]string query)
+        [Summary("Play a song from YouTube by entering its name or link.")]
+        public async Task PlayAsync([Remainder]string searchQuery)
         {
-            if (string.IsNullOrWhiteSpace(query))
+            if (string.IsNullOrWhiteSpace(searchQuery))
             {
                 //await ReplyAsync("Please provide search terms.");
                 await Context.Channel.SendErrorAsync("No search terms!", "Please provide search terms!");
@@ -102,67 +109,135 @@ namespace EssentiBot.Modules
                 return;
             }
 
-            if (!query.StartsWith("http"))
+            if (!searchQuery.StartsWith("http"))
             {
-
-
-                var searchResponse = await _lavaNode.SearchYouTubeAsync(query);
+                var searchResponse = await _lavaNode.SearchYouTubeAsync(searchQuery);
                 if (searchResponse.LoadStatus == LoadStatus.LoadFailed ||
                     searchResponse.LoadStatus == LoadStatus.NoMatches)
                 {
-                    await Context.Channel.SendErrorAsync("Error!", $"I wasn't able to find anything for `{query}`.");
+                    await Context.Channel.SendErrorAsync("Error!", $"I wasn't able to find anything for `{searchQuery}`.");
                     return;
                 }
+
 
                 var player = _lavaNode.GetPlayer(Context.Guild);
 
                 if (player.PlayerState == PlayerState.Playing || player.PlayerState == PlayerState.Paused)
                 {
-                    var track = searchResponse.Tracks[0];
-                    player.Queue.Enqueue(track);
-                    //await ReplyAsync($"Enqueued: {track.Title}");
-                    await Context.Channel.SendSuccessAsync("Queued!", $"Enqueued: `{track.Title}`");
+                    if (!string.IsNullOrWhiteSpace(searchResponse.Playlist.Name))
+                    {
+                        foreach (var track in searchResponse.Tracks)
+                        {
+                            player.Queue.Enqueue(track);
+                        }
+
+                        //await ReplyAsync($"Enqueued {searchResponse.Tracks.Count} tracks.");
+                        await Context.Channel.SendSuccessAsync("Queued!", $"Enqueued {searchResponse.Tracks.Count} tracks.");
+                    }
+                    else
+                    {
+                        var track = searchResponse.Tracks[0];
+                        player.Queue.Enqueue(track);
+                        await Context.Channel.SendSuccessAsync("Queued!", $"Enqueued: `{track.Title}`");
+                    }
                 }
                 else
                 {
                     var track = searchResponse.Tracks[0];
-
-                    await player.PlayAsync(track);
-                    //var artwork = await track.FetchArtworkAsync();
-                    await Context.Channel.SendSuccessAsync("Playing!", $"Now Playing: `{track.Title}`");
+                    if (!string.IsNullOrWhiteSpace(searchResponse.Playlist.Name))
+                    {
+                        for (var i = 0; i < searchResponse.Tracks.Count; i++)
+                        {
+                            if (i == 0)
+                            {
+                                await player.PlayAsync(track);
+                                await Context.Channel.SendSuccessAsync("Playing!", $"Now Playing: `{track.Title}`");
+                                await _client.SetGameAsync($"{track.Title}", null, ActivityType.Listening);
+                            }
+                            else
+                            {
+                                player.Queue.Enqueue(searchResponse.Tracks[i]);
+                            }
+                        }
+                        await Context.Channel.SendSuccessAsync("Queued!", $"Enqueued {searchResponse.Tracks.Count} tracks.");
+                    }
+                    else
+                    {
+                        await player.PlayAsync(track);
+                        await Context.Channel.SendSuccessAsync("Playing!", $"Now Playing: `{track.Title}`");
+                        await _client.SetGameAsync($"{track.Title}", null, ActivityType.Listening);
+                    }
                 }
+                
             }
             else
             {
-                var searchResponse = await _lavaNode.SearchAsync(query);
-                if (searchResponse.LoadStatus == LoadStatus.LoadFailed ||
-                    searchResponse.LoadStatus == LoadStatus.NoMatches)
+                var queries = searchQuery.Split(' ');
+                foreach (var query in queries)
                 {
-                    await Context.Channel.SendErrorAsync("Error!", $"I wasn't able to find anything for `{query}`.");
-                    return;
-                }
+                    var searchResponse = await _lavaNode.SearchAsync(query);
+                    if (searchResponse.LoadStatus == LoadStatus.LoadFailed ||
+                        searchResponse.LoadStatus == LoadStatus.NoMatches)
+                    {
+                        await Context.Channel.SendErrorAsync("Error!", $"I wasn't able to find anything for `{query}`.");
+                        return;
+                    }
 
-                var player = _lavaNode.GetPlayer(Context.Guild);
 
-                if (player.PlayerState == PlayerState.Playing || player.PlayerState == PlayerState.Paused)
-                {
-                    var track = searchResponse.Tracks[0];
-                    player.Queue.Enqueue(track);
-                    //await ReplyAsync($"Enqueued: {track.Title}");
-                    await Context.Channel.SendSuccessAsync("Queued!", $"Enqueued: `{track.Title}`");
-                }
-                else
-                {
-                    var track = searchResponse.Tracks[0];
+                    var player = _lavaNode.GetPlayer(Context.Guild);
 
-                    await player.PlayAsync(track);
-                    //var artwork = await track.FetchArtworkAsync();
-                    await Context.Channel.SendSuccessAsync("Playing!", $"Now Playing: `{track.Title}`");
+                    if (player.PlayerState == PlayerState.Playing || player.PlayerState == PlayerState.Paused)
+                    {
+                        if (!string.IsNullOrWhiteSpace(searchResponse.Playlist.Name))
+                        {
+                            foreach (var track in searchResponse.Tracks)
+                            {
+                                player.Queue.Enqueue(track);
+                            }
+
+                            //await ReplyAsync($"Enqueued {searchResponse.Tracks.Count} tracks.");
+                            await Context.Channel.SendSuccessAsync("Queued!", $"Enqueued {searchResponse.Tracks.Count} tracks.");
+                        }
+                        else
+                        {
+                            var track = searchResponse.Tracks[0];
+                            player.Queue.Enqueue(track);
+                            await Context.Channel.SendSuccessAsync("Queued!", $"Enqueued: `{track.Title}`");
+                        }
+                    }
+                    else
+                    {
+                        var track = searchResponse.Tracks[0];
+                        if (!string.IsNullOrWhiteSpace(searchResponse.Playlist.Name))
+                        {
+                            for (var i = 0; i < searchResponse.Tracks.Count; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    await player.PlayAsync(track);
+                                    await Context.Channel.SendSuccessAsync("Playing!", $"Now Playing: `{track.Title}`");
+                                    await _client.SetGameAsync($"{track.Title}", null, ActivityType.Listening);
+                                }
+                                else
+                                {
+                                    player.Queue.Enqueue(searchResponse.Tracks[i]);
+                                }
+                            }
+                            await Context.Channel.SendSuccessAsync("Queued!", $"Enqueued {searchResponse.Tracks.Count} tracks.");
+                        }
+                        else
+                        {
+                            await player.PlayAsync(track);
+                            await Context.Channel.SendSuccessAsync("Playing!", $"Now Playing: `{track.Title}`");
+                            await _client.SetGameAsync($"{track.Title}", null, ActivityType.Listening);
+                        }
+                    }
                 }
             }
         }
        
         [Command("skip", RunMode = RunMode.Async)]
+        [Summary("Skip the current track.")]
         public async Task Skip()
         {
             var voiceState = Context.User as IVoiceState;
@@ -195,9 +270,11 @@ namespace EssentiBot.Modules
 
             await player.SkipAsync();
             await Context.Channel.SendSuccessAsync("Skipped!", $"Now playing: `{player.Track.Title}`!");
+            await _client.SetGameAsync($"{player.Track.Title}", null, ActivityType.Listening);
         }
 
         [Command("pause", RunMode = RunMode.Async)]
+        [Summary("Pause the current track.")]
         public async Task Pause()
         {
             var voiceState = Context.User as IVoiceState;
@@ -228,11 +305,18 @@ namespace EssentiBot.Modules
                 return;
             }
 
+            if (player.Queue.Count == 0)
+            {
+                await Context.Channel.SendErrorAsync("Empty Queue!", "There are no more songs in the queue!");
+                return;
+            }
+
             await player.PauseAsync();
             await Context.Channel.SendSuccessAsync("Paused!", $"Paused the track: `{player.Track.Title}`!");
         }
 
         [Command("resume", RunMode = RunMode.Async)]
+        [Summary("Resumes the current track.")]
         public async Task Resume()
         {
             var voiceState = Context.User as IVoiceState;
@@ -263,12 +347,20 @@ namespace EssentiBot.Modules
                 return;
             }
 
+            if (player.Queue.Count == 0)
+            {
+                await Context.Channel.SendErrorAsync("Empty Queue!", "There are no more songs in the queue!");
+                return;
+            }
+
             await player.ResumeAsync();
             await Context.Channel.SendSuccessAsync("Resumed!", $"Resumed the track: `{player.Track.Title}`!");
+            await _client.SetGameAsync($"{player.Track.Title}", null, ActivityType.Listening);
         }
 
         [Command("nowplaying", RunMode = RunMode.Async)]
         [Alias("np")]
+        [Summary("Displays the current track that's being played.")]
         public async Task NowPlaying()
         {
             var voiceState = Context.User as IVoiceState;
@@ -294,6 +386,7 @@ namespace EssentiBot.Modules
             }
 
             await Context.Channel.SendSuccessAsync("Now playing:", $"`{player.Track.Title}`");
+            await _client.SetGameAsync($"{player.Track.Title}", null, ActivityType.Listening);
         }
     }
 }

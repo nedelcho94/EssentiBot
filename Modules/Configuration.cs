@@ -28,6 +28,7 @@ namespace EssentiBot.Modules
 
         [Command("prefix", RunMode = RunMode.Async)]
         [RequireUserPermission(Discord.GuildPermission.Administrator)]
+        [Summary("View or change the prefix. Requires `Administrator` role.")]
         public async Task Prefix(string prefix = null)
         {
             if (prefix == null)
@@ -49,6 +50,7 @@ namespace EssentiBot.Modules
         }
 
         [Command("ranks", RunMode = RunMode.Async)]
+        [Summary("Lists all available ranks.\nIn order to add a rank, you can use the name or ID of the rank.")]
         public async Task Ranks()
         {
             var ranks = await _serverHelper.GetRanksAsync(Context.Guild);
@@ -72,6 +74,7 @@ namespace EssentiBot.Modules
         [Command("addrank", RunMode = RunMode.Async)]
         [RequireUserPermission(GuildPermission.Administrator)]
         [RequireBotPermission(GuildPermission.ManageRoles)]
+        [Summary("Add a role to the server ranks. Requires `Administrator` role.")]
         public async Task AddRank([Remainder] string name)
         {
             await Context.Channel.TriggerTypingAsync();
@@ -103,6 +106,7 @@ namespace EssentiBot.Modules
         [Command("delrank", RunMode = RunMode.Async)]
         [RequireUserPermission(GuildPermission.Administrator)]
         [RequireBotPermission(GuildPermission.ManageRoles)]
+        [Summary("Remove a role from the server ranks. Requires `Administrator` role")]
         public async Task DelRank([Remainder]string name)
         {
             await Context.Channel.TriggerTypingAsync();
@@ -128,6 +132,7 @@ namespace EssentiBot.Modules
 
         [Command("autoroles", RunMode = RunMode.Async)]
         [RequireUserPermission(GuildPermission.Administrator)]
+        [Summary("List all available autoroles on the server. Requires `Administrator` role.")]
         public async Task AutoRoles()
         {
             var autoRoles = await _serverHelper.GetAutoRolesAsync(Context.Guild);
@@ -151,6 +156,7 @@ namespace EssentiBot.Modules
         [Command("addautorole", RunMode = RunMode.Async)]
         [RequireUserPermission(GuildPermission.Administrator)]
         [RequireBotPermission(GuildPermission.ManageRoles)]
+        [Summary("Add a role to the server autoroles. Requires `Administrator` role.")]
         public async Task AddAutoRole([Remainder] string name)
         {
             await Context.Channel.TriggerTypingAsync();
@@ -182,6 +188,7 @@ namespace EssentiBot.Modules
         [Command("delautorole", RunMode = RunMode.Async)]
         [RequireUserPermission(GuildPermission.Administrator)]
         [RequireBotPermission(GuildPermission.ManageRoles)]
+        [Summary("Remove a role from the server autoroles. Requires `Administrator` role.")]
         public async Task DelAutoRole([Remainder] string name)
         {
             await Context.Channel.TriggerTypingAsync();
@@ -206,6 +213,7 @@ namespace EssentiBot.Modules
 
         [Command("welcome")]
         [RequireUserPermission(GuildPermission.Administrator)]
+        [Summary("Set/Modify/Clear a welcome channel for the server. Requires `Administrator` role.")]
         public async Task Welcome(string option = null, string value = null)
         {
             if(option == null && value == null)
@@ -280,6 +288,7 @@ namespace EssentiBot.Modules
 
         [Command("logs")]
         [RequireUserPermission(GuildPermission.Administrator)]
+        [Summary("Set/Modify/Clear a logs channel for the server. Requires `Administrator` role.")]
         public async Task Logs(string value = null)
         {
             if (value == null)

@@ -13,6 +13,7 @@ using EssentiBot.Utilities;
 using Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Victoria;
+using Victoria.EventArgs;
 
 namespace EssentiBot.Services
 {
@@ -45,6 +46,7 @@ namespace EssentiBot.Services
             _client.MessageReceived += OnMessageReceived;
             _client.UserJoined += OnUserJoined;
             _client.Ready += OnReadyAsync;
+            _lavaNode.OnTrackEnded += OnTrackEnded;
             _client.ReactionAdded += OnReactionAsync;
             _client.JoinedGuild += OnJoinedGuild;
             _client.LeftGuild += OnLeftGuild;
@@ -54,6 +56,33 @@ namespace EssentiBot.Services
 
             _service.CommandExecuted += OnCommandExecuted;
             await _service.AddModulesAsync(Assembly.GetEntryAssembly(), _provider);
+        }
+
+        private async Task OnTrackEnded(TrackEndedEventArgs args)
+        {
+            if (!args.Reason.ShouldPlayNext())
+            {
+                return;
+            }
+
+            var player = args.Player;
+            if (!player.Queue.TryDequeue(out var queueable))
+            {
+                await (player.TextChannel as ISocketMessageChannel).SendSuccessAsync("Queue completed!", "Please add more tracks to rock n' roll!");
+                await _client.SetGameAsync("use //help to see my commands", null, ActivityType.Playing);
+                return;
+            }
+
+            if (!(queueable is LavaTrack track))
+            {
+                await (player.TextChannel as ISocketMessageChannel).SendErrorAsync("Error!","Next item in queue is not a track!");
+                return;
+            }
+
+            await args.Player.PlayAsync(track);
+            await (args.Player.TextChannel as ISocketMessageChannel).SendSuccessAsync("Finished playing current song!",
+                $"{args.Reason}: `{args.Track.Title}`\n\nNow playing: `{track.Title}`");
+            await _client.SetGameAsync($"{args.Track.Title}", null, ActivityType.Listening);
         }
 
         private async Task OnLeftGuild(SocketGuild arg)
@@ -82,6 +111,8 @@ namespace EssentiBot.Services
             {
                await _lavaNode.ConnectAsync();
             }
+
+            await _client.SetGameAsync("use //help to see my commands", null, ActivityType.Playing);
         }
 
         private async Task MuteHandler()

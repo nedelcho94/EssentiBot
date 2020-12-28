@@ -10,6 +10,13 @@ namespace EssentiBot.Modules
 {
     public class Interactive : InteractiveBase
     {
+        private readonly CommandService _service;
+
+        public Interactive(CommandService service)
+        {
+            _service = service;
+        }
+
         // DeleteAfterAsync will send a message and asynchronously delete it after the timeout has popped
         // This method will not block.
         [Command("delete")]
@@ -42,15 +49,15 @@ namespace EssentiBot.Modules
         // You can customize the paginator by creating a PaginatedMessage object
         // You can customize the criteria for the paginator as well, which defaults to restricting to the source user
         // This method will not block.
-        [Command("paginator")]
-        [Alias("help")]
+        [Command("paginator")]  
+        [Summary("This will create a paginator")]
         public async Task Test_Paginator()
         {
             var pages = new[] { 
                 "**Help**\n\n`//help` - Show the help command.", 
                 "**Help**\n\n`//prefix` - View or change the prefix.", 
                 "**Help**\n\n`//ping` - Get a reply with the current latency.",
-                "**Help**\n\n`//ranks` - Llists all available ranks.\nIn order to add a rank, you can use the name or ID of the rank.",
+                "**Help**\n\n`//ranks` - Lists all available ranks.\nIn order to add a rank, you can use the name or ID of the rank.",
                 "**Help**\n\n`//addrank` - Add a role to the server ranks.",
                 "**Help**\n\n`//delrank` - Remove a role from the server ranks.",
                 "**Help**\n\n`//autorole` - List all available autoroles on the server.",
@@ -83,6 +90,25 @@ namespace EssentiBot.Modules
             };
       
             await PagedReplyAsync(paginatedMessage);
+        }
+
+        [Command("help")]
+        [Summary("Show the help command.")]
+        public async Task Help()
+        {
+            List<string> Pages = new List<string>();
+
+            foreach(var module in _service.Modules)
+            {
+                string page = $"**{module.Name}**\n\n";
+                foreach(var command in module.Commands)
+                {
+                    page += $"`//{command.Name}` - {command.Summary ?? "No description provided."}\n\n";
+                }
+                Pages.Add(page);
+            }
+
+            await PagedReplyAsync(Pages);
         }
     }
 }

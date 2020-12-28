@@ -31,6 +31,7 @@ namespace EssentiBot.Modules
             
 
         [Command("ping")]
+        [Summary("Get a reply with the current latency.")]
         public async Task PingAsync()
         {
             await Context.Channel.TriggerTypingAsync();
@@ -41,6 +42,7 @@ namespace EssentiBot.Modules
         }
 
         [Command("echo")]
+        [Summary("Makes the bot repeat your message.")]
         public async Task EchoAsync([Remainder] string text)
         {
             await Context.Channel.TriggerTypingAsync();
@@ -51,6 +53,7 @@ namespace EssentiBot.Modules
         }
 
         [Command("math")]
+        [Summary("A simple math command.")]
         public async Task MathAsync([Remainder] string math)
         {
             await Context.Channel.TriggerTypingAsync();
@@ -64,6 +67,7 @@ namespace EssentiBot.Modules
         }
 
         [Command("info")]
+        [Summary("Shows information about yourself or a mentioned user.")]
         public async Task Info(SocketGuildUser user = null)
         {
             await Context.Channel.TriggerTypingAsync();
@@ -101,6 +105,7 @@ namespace EssentiBot.Modules
         }       
 
         [Command("server")]
+        [Summary("Shows information about the server.")]
         public async Task Server()
         {
             await Context.Channel.TriggerTypingAsync();
@@ -121,6 +126,7 @@ namespace EssentiBot.Modules
 
         [Command("rank", RunMode = RunMode.Async)]
         [RequireBotPermission(GuildPermission.ManageRoles)]
+        [Summary("Add or remove a rank from yourself.")]
         public async Task Rank([Remainder]string identifier)
         {
             await Context.Channel.TriggerTypingAsync();
@@ -174,6 +180,7 @@ namespace EssentiBot.Modules
         [Command("mute")]
         [RequireUserPermission(GuildPermission.KickMembers)]
         [RequireBotPermission(GuildPermission.ManageRoles)]
+        [Summary("Mute someone for a given duration. Requires `Administrator` role.")]
         public async Task Mute(SocketGuildUser user, int minutes, [Remainder]string reason = null)
         {
             if(user.Hierarchy > Context.Guild.CurrentUser.Hierarchy)
@@ -218,6 +225,7 @@ namespace EssentiBot.Modules
         [Command("unmute")]
         [RequireUserPermission(GuildPermission.KickMembers)]
         [RequireBotPermission(GuildPermission.ManageRoles)]
+        [Summary("Unmute someone that has been muted. Requires `Administrator` role.")]
         public async Task Unmute(SocketGuildUser user)
         {
             var role = (Context.Guild as IGuild).Roles.FirstOrDefault(x => x.Name == "Muted!");

@@ -13,6 +13,7 @@ namespace EssentiBot.Modules
     {
         [Command("purge")]
         [RequireUserPermission(GuildPermission.ManageMessages)]
+        [Summary("Delete a set number of messages. Requires `Administrator` role.")]
         public async Task Purge(int amount)
         {
             var messages = await Context.Channel.GetMessagesAsync(amount + 1).FlattenAsync();
