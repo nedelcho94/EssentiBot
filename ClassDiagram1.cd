@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EssentiBot.Program">
+    <Position X="13" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EssentiBot.Common.Extensions">
+    <Position X="9.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Common\Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EssentiBot.Common.Mute">
+    <Position X="16.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIBAAAAAAAAAAQAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Common\Mute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EssentiBot.Modules.Configuration">
+    <Position X="17" Y="6.5" Width="1.5" />
+    <AssociationLine Name="_servers" Type="Infrastructure.Servers" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="18.5" Y="8.625" />
+        <Point X="19.327" Y="8.625" />
+        <Point X="19.327" Y="14.466" />
+        <Point X="18.5" Y="14.466" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_ranks" Type="Infrastructure.Ranks" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="18.5" Y="8.938" />
+        <Point X="18.875" Y="8.938" />
+        <Point X="18.875" Y="12.686" />
+        <Point X="18.5" Y="12.686" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.362" Y="0.049" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_serverHelper" Type="EssentiBot.Utilities.ServerHelper" FixedFromPoint="true">
+      <Path>
+        <Point X="17" Y="7.937" />
+        <Point X="16.25" Y="7.937" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AABggAEQAAAAAAgAAAgAAAACAgAIAAAAgAAAEAgAAAA=</HashCode>
+      <FileName>Modules\Configuration.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_servers" />
+      <Field Name="_ranks" />
+      <Field Name="_autoRoles" />
+      <Field Name="_serverHelper" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EssentiBot.Modules.Fun">
+    <Position X="14.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Modules\Fun.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EssentiBot.Modules.General">
+    <Position X="12" Y="6.75" Width="1.5" />
+    <AssociationLine Name="_images" Type="EssentiBot.Utilities.Images" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13" Y="6.75" />
+        <Point X="13" Y="5.5" />
+        <Point X="16" Y="5.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_client" Type="Discord.WebSocket.DiscordSocketClient" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.812" Y="6.75" />
+        <Point X="12.812" Y="4.688" />
+        <Point X="16" Y="4.688" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AQABAAAAAAACAEAACAAAAAAAICAAAAAAQAAAEkAAAQA=</HashCode>
+      <FileName>Modules\General.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_logger" />
+      <Field Name="_images" />
+      <Field Name="_serverHelper" />
+      <Field Name="_client" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EssentiBot.Modules.Interactive">
+    <Position X="22.75" Y="9.75" Width="1.5" />
+    <AssociationLine Name="_service" Type="Discord.Commands.CommandService" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="23.625" Y="9.75" />
+        <Point X="23.625" Y="9.312" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAIAAAQAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Modules\Interactive.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_service" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EssentiBot.Modules.Moderation">
+    <Position X="11.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modules\Moderation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EssentiBot.Modules.Music">
+    <Position X="10" Y="6.75" Width="1.5" />
+    <AssociationLine Name="_client" Type="Discord.WebSocket.DiscordSocketClient" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.75" Y="6.75" />
+        <Point X="10.75" Y="4.438" />
+        <Point X="16" Y="4.438" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAkAAAACAACAEAAAAACAAAAAAAAAAEAAAAAAAgAEAA=</HashCode>
+      <FileName>Modules\Music.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_lavaNode" />
+      <Field Name="_client" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EssentiBot.Services.CommandHandler">
+    <Position X="20.25" Y="6.75" Width="1.5" />
+    <AssociationLine Name="_provider" Type="System.IServiceProvider" FixedToPoint="true">
+      <Path>
+        <Point X="21.625" Y="10.098" />
+        <Point X="21.625" Y="10.75" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_client" Type="Discord.WebSocket.DiscordSocketClient" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="21.375" Y="6.75" />
+        <Point X="21.375" Y="4.596" />
+        <Point X="17.5" Y="4.596" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_service" Type="Discord.Commands.CommandService" FixedToPoint="true">
+      <Path>
+        <Point X="21.75" Y="9.062" />
+        <Point X="22.75" Y="9.062" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_config" Type="Microsoft.Extensions.Configuration.IConfiguration" FixedToPoint="true">
+      <Path>
+        <Point X="21.75" Y="8.25" />
+        <Point X="22.75" Y="8.25" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_servers" Type="Infrastructure.Servers" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="20.25" Y="9.875" />
+        <Point X="19.607" Y="9.875" />
+        <Point X="19.607" Y="16.615" />
+        <Point X="18.5" Y="16.615" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_serverHelper" Type="EssentiBot.Utilities.ServerHelper" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="20.625" Y="6.75" />
+        <Point X="20.625" Y="6.25" />
+        <Point X="15.438" Y="6.25" />
+        <Point X="15.438" Y="7.25" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_images" Type="EssentiBot.Utilities.Images" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="21" Y="6.75" />
+        <Point X="21" Y="5.5" />
+        <Point X="17.5" Y="5.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Mutes" Type="System.Collections.Generic.List&lt;T&gt;" FixedFromPoint="true">
+      <Path>
+        <Point X="21.75" Y="7.25" />
+        <Point X="22.75" Y="7.25" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_lavaNode" Type="Victoria.LavaNode" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="20.562" Y="10.098" />
+        <Point X="20.562" Y="17.807" />
+        <Point X="18.5" Y="17.807" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EIAKAAAAAAACEMAQEAEBAAAAEEAAAQAAgAAAEAAAAgA=</HashCode>
+      <FileName>Services\CommandHandler.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_provider" />
+      <Field Name="_client" />
+      <Field Name="_service" />
+      <Field Name="_config" />
+      <Field Name="_servers" />
+      <Field Name="_serverHelper" />
+      <Field Name="_images" />
+      <Field Name="Mutes" />
+      <Field Name="_lavaNode" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EssentiBot.Utilities.Images" Collapsed="true">
+    <Position X="16" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CCAAAAAAAAAAAAAAAAAAAAAAAKAAAAABAAAAAAAAAgA=</HashCode>
+      <FileName>Utilities\Images.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EssentiBot.Utilities.ServerHelper">
+    <Position X="14.75" Y="7.25" Width="1.5" />
+    <AssociationLine Name="_servers" Type="Infrastructure.Servers" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.438" Y="8.93" />
+        <Point X="15.438" Y="15.541" />
+        <Point X="17" Y="15.541" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_ranks" Type="Infrastructure.Ranks" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="16" Y="8.93" />
+        <Point X="16" Y="12.686" />
+        <Point X="17" Y="12.686" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="_autoRoles" Type="Infrastructure.AutoRoles" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="16.25" Y="8.562" />
+        <Point X="16.625" Y="8.562" />
+        <Point X="16.625" Y="10.686" />
+        <Point X="17" Y="10.686" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAgCAEAAAAEAAAAAACAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\ServerHelper.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_servers" />
+      <Field Name="_ranks" />
+      <Field Name="_autoRoles" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Discord.WebSocket.DiscordSocketClient" Collapsed="true">
+    <Position X="16" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Victoria.LavaNode">
+    <Position X="17" Y="17.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Discord.Commands.CommandService" Collapsed="true">
+    <Position X="22.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Collections.Generic.List&lt;T&gt;" Collapsed="true">
+    <Position X="22.75" Y="7" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Infrastructure.AutoRoles">
+    <Position X="17" Y="9.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Infrastructure.EssentiBotContext">
+    <Position X="23.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Infrastructure.Server">
+    <Position X="21.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Infrastructure.Rank">
+    <Position X="18.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Infrastructure.AutoRole">
+    <Position X="20" Y="2.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Infrastructure.Ranks">
+    <Position X="17" Y="11.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Infrastructure.Servers">
+    <Position X="17" Y="13.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="Microsoft.Extensions.Configuration.IConfiguration" Collapsed="true">
+    <Position X="22.75" Y="8" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="System.IServiceProvider" Collapsed="true">
+    <Position X="21" Y="10.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Microsoft.Extensions.Logging.ILogger&lt;TCategoryName&gt;" Collapsed="true">
+    <Position X="12" Y="10" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
