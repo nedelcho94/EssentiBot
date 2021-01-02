@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using Discord;
 using Discord.WebSocket;
 using EssentiBot.Common;
+using System.Linq;
 
 namespace EssentiBot.Modules
 {
@@ -45,6 +46,19 @@ namespace EssentiBot.Modules
                 .WithFooter($"🗨 {post["num_comments"]} ⬆️ {post["ups"]}");
             var embed = builder.Build();
             await Context.Channel.SendMessageAsync(null, false, embed);
+        }
+
+        [Command("joke")]
+        [Summary("Get a random joke as a response")]
+        public async Task Joke()
+        {
+            string[] responses = { "What do you call a dinosaur that is sleeping?\n\n**A dino-snore!**",
+                "What did the left eye say to the right eye?\n\n**Between us, something smells!**",
+                "When you look for something, why is it always in the last place you look?\n\n**Because when you find it, you stop looking.**",
+                "Obi Wan: “Yoda, why did the Star Wars movies come out 4,5,6,1,2,3\n\nYoda: “In charge of scheduling I was”",
+                "What did the 0 say to the 8?\n\n**Nice belt!**"
+            };
+            await ReplyAsync(responses[new Random().Next(0, responses.Count())]);
         }
     }
 }

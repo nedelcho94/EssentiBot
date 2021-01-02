@@ -21,6 +21,7 @@ namespace EssentiBot
     {
         static async Task Main()
         {
+            // Configure the application
             var builder = new HostBuilder()
                 .ConfigureAppConfiguration(x =>
                 {
@@ -31,28 +32,31 @@ namespace EssentiBot
 
                     x.AddConfiguration(configuration);
                 })
+                // Configure Logging
                 .ConfigureLogging(x =>
                 {
                     x.AddConsole();
-                    x.SetMinimumLevel(LogLevel.Debug); // Defines what kind of information should be logged (e.g. Debug, Information, Warning, Critical) adjust this to your liking
+                    x.SetMinimumLevel(LogLevel.Debug); // Defines what kind of information should be logged (e.g. Debug, Information, Warning, Critical)
                 })
                 .ConfigureDiscordHost<DiscordSocketClient>((context, config) =>
                 {
                     config.SocketConfig = new DiscordSocketConfig
                     {
-                        LogLevel = LogSeverity.Verbose, // Defines what kind of information should be logged from the API (e.g. Verbose, Info, Warning, Critical) adjust this to your liking
+                        LogLevel = LogSeverity.Verbose, // Defines what kind of information should be logged from the API (e.g. Verbose, Info, Warning, Critical)
                         AlwaysDownloadUsers = true,
                         MessageCacheSize = 200,
                     };
 
                     config.Token = context.Configuration["token"];
                 })
+                // Provide options to the command service
                 .UseCommandService((context, config) =>
                 {
                     config.CaseSensitiveCommands = false;
                     config.LogLevel = LogSeverity.Verbose;
                     config.DefaultRunMode = RunMode.Sync;
                 })
+                // Configure the services
                 .ConfigureServices((context, services) =>
                 {
                     services

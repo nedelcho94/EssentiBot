@@ -23,7 +23,7 @@ namespace EssentiBot.Utilities
             bitmap?.MakeTransparent();
 
             var banner = CopyRegionIntoImage(bitmap, background);
-            banner = DrawTextToImage(banner, $"{user.Username}#{user.Discriminator} joined the server", $"Memver #{user.Guild.MemberCount}");
+            banner = DrawTextToImage(banner, $"{user.Username}#{user.Discriminator} joined the server", $"Member #{user.Guild.MemberCount}");
 
             string path = $"{Guid.NewGuid()}.png";
             banner.Save(path);

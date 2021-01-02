@@ -28,8 +28,7 @@ namespace EssentiBot.Modules
             _serverHelper = serverHelper;
             _client = client;
         }
-            
-
+                   
         [Command("ping")]
         [Summary("Get a reply with the current latency.")]
         public async Task PingAsync()

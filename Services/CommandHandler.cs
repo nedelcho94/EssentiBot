@@ -40,7 +40,7 @@ namespace EssentiBot.Services
             _images = images;
             _lavaNode = lavaNode;
         }
-
+        // Pass the events we are working with to the modules
         public override async Task InitializeAsync(CancellationToken cancellationToken)
         {
             _client.MessageReceived += OnMessageReceived;
