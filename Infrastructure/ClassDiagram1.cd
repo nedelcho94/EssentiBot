@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Infrastructure.AutoRoles">
+    <Position X="10.75" Y="7.25" Width="1.5" />
+    <AssociationLine Name="_context" Type="Infrastructure.EssentiBotContext" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.25" Y="8.186" />
+        <Point X="12.625" Y="8.186" />
+        <Point X="12.625" Y="6.125" />
+        <Point X="13" Y="6.125" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.4" Y="-0.973" Height="0.182" Width="0.791" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAABAAAAACAAAAAAAAAACAAAAAAAAABAAA=</HashCode>
+      <FileName>AutoRoles.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_context" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infrastructure.EssentiBotContext">
+    <Position X="13" Y="5" Width="1.5" />
+    <AssociationLine Name="AutoRoles" Type="Microsoft.EntityFrameworkCore.DbSet&lt;TEntity&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="5.188" />
+        <Point X="15.75" Y="5.188" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.384" Y="0.065" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Inventories" Type="Microsoft.EntityFrameworkCore.DbSet&lt;TEntity&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="5.938" />
+        <Point X="15.75" Y="5.938" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.347" Y="0.074" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Items" Type="Microsoft.EntityFrameworkCore.DbSet&lt;TEntity&gt;" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.25" Y="5" />
+        <Point X="14.25" Y="4.625" />
+        <Point X="16.438" Y="4.625" />
+        <Point X="16.438" Y="5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="1.555" Y="0.418" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Ranks" Type="Microsoft.EntityFrameworkCore.DbSet&lt;TEntity&gt;" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="14.5" Y="6.25" />
+        <Point X="15.125" Y="6.25" />
+        <Point X="15.125" Y="6.25" />
+        <Point X="15.75" Y="6.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.608" Y="0.066" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Servers" Type="Microsoft.EntityFrameworkCore.DbSet&lt;TEntity&gt;" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.312" Y="6.425" />
+        <Point X="14.312" Y="6.938" />
+        <Point X="15.75" Y="6.938" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.686" Y="0.103" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="UserProfiles" Type="Microsoft.EntityFrameworkCore.DbSet&lt;TEntity&gt;" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="5.563" />
+        <Point X="15.75" Y="5.563" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.279" Y="0.067" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAQAACAAAAAAAAAAAEgQAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>EssentiBotContext.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AutoRoles" />
+      <Property Name="Inventories" />
+      <Property Name="Items" />
+      <Property Name="Ranks" />
+      <Property Name="Servers" />
+      <Property Name="UserProfiles" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infrastructure.Server">
+    <Position X="21.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAQAAAAAAAAAAAEAAADAAAAAAAAgAAgAAAAAAA=</HashCode>
+      <FileName>EssentiBotContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infrastructure.Rank">
+    <Position X="18.75" Y="4" Width="1.5" />
+    <AssociationLine Name="Server" Type="Infrastructure.Server">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.358" Y="0.088" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAIAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>EssentiBotContext.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Server" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infrastructure.AutoRole">
+    <Position X="23.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAIAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>EssentiBotContext.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Server" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infrastructure.UserProfile">
+    <Position X="23.75" Y="5.5" Width="1.5" />
+    <AssociationLine Name="Inventory" Type="Infrastructure.Inventory">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.151" Y="0.074" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Server" Type="Infrastructure.Server" FixedFromPoint="true">
+      <Path>
+        <Point X="23.75" Y="5.875" />
+        <Point X="22.75" Y="5.875" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAAABAAAAAAAAAAEAAgAAAAAAAABAAAAAgAAAAA=</HashCode>
+      <FileName>EssentiBotContext.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Inventory" />
+      <Property Name="Server" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infrastructure.Inventory">
+    <Position X="21.25" Y="6.75" Width="1.5" />
+    <AssociationLine Name="UserProfile" Type="Infrastructure.UserProfile">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.05" Y="-0.33" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAgAAAQAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>EssentiBotContext.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="UserProfile" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infrastructure.Item">
+    <Position X="19" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIEAAAAAAAAAAQAgAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EssentiBotContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Infrastructure.InventoryItem">
+    <Position X="18.75" Y="6.25" Width="1.5" />
+    <AssociationLine Name="Inventory" Type="Infrastructure.Inventory">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.115" Y="0.11" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Item" Type="Infrastructure.Item">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.06" Y="0.22" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAEAAAAAAAAAEAAggAAAAA=</HashCode>
+      <FileName>EssentiBotContext.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Inventory" />
+      <Property Name="Item" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infrastructure.Items">
+    <Position X="13.75" Y="2.75" Width="1.5" />
+    <AssociationLine Name="_context" Type="Infrastructure.EssentiBotContext" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="4.046" />
+        <Point X="14.5" Y="4.421" />
+        <Point X="13.875" Y="4.421" />
+        <Point X="13.875" Y="5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.571" Y="0.715" Height="0.182" Width="0.806" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Items.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_context" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infrastructure.Ranks">
+    <Position X="11.75" Y="2.5" Width="1.5" />
+    <AssociationLine Name="_context" Type="Infrastructure.EssentiBotContext" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.625" Y="4.373" />
+        <Point X="12.625" Y="4.748" />
+        <Point X="13.312" Y="4.748" />
+        <Point X="13.312" Y="5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.212" Y="0.364" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEBAIAAAABAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Ranks.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_context" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infrastructure.Servers">
+    <Position X="9.75" Y="2.5" Width="1.5" />
+    <AssociationLine Name="_context" Type="Infrastructure.EssentiBotContext" FixedToPoint="true">
+      <Path>
+        <Point X="11.25" Y="5.688" />
+        <Point X="13" Y="5.688" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.921" Y="0.137" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIAAEAhAEAAADAQAAAAAAAkACAAgAIAAAAQAEAAAACA=</HashCode>
+      <FileName>Servers.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_context" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Infrastructure.UserProfiles">
+    <Position X="13" Y="7.25" Width="1.5" />
+    <AssociationLine Name="_context" Type="Infrastructure.EssentiBotContext">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.814" Y="0.44" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAABAAAAAAAAgAAAAAYCAAAAAAAgAAAQQA=</HashCode>
+      <FileName>UserProfiles.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_context" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Microsoft.EntityFrameworkCore.DbSet&lt;TEntity&gt;">
+    <Position X="15.75" Y="5" Width="2.75" />
+    <TypeIdentifier />
+    <Lollipop Position="0.904" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

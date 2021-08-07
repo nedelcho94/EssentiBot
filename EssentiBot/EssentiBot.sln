@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EssentiBot", "EssentiBot.csproj", "{A5E1F9C5-D380-4AF2-939D-D4924A8D4ACE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "..\Infrastructure\Infrastructure.csproj", "{97828C79-4ED5-42E0-AAAD-6113296423F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5E1F9C5-D380-4AF2-939D-D4924A8D4ACE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5E1F9C5-D380-4AF2-939D-D4924A8D4ACE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5E1F9C5-D380-4AF2-939D-D4924A8D4ACE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5E1F9C5-D380-4AF2-939D-D4924A8D4ACE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97828C79-4ED5-42E0-AAAD-6113296423F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97828C79-4ED5-42E0-AAAD-6113296423F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97828C79-4ED5-42E0-AAAD-6113296423F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97828C79-4ED5-42E0-AAAD-6113296423F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E250058D-C8D1-41DB-86D5-F908F3D7B56A}
+	EndGlobalSection
+EndGlobal
