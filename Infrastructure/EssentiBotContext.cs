@@ -18,6 +18,7 @@ namespace Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlServer("server=localhost;Database=EssentiBot;Trusted_Connection=True;MultipleActiveResultSets=true");
+        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

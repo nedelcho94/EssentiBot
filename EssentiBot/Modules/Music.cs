@@ -378,7 +378,7 @@ namespace EssentiBot.Modules
         }
 
         [Command("volume")]
-        public async Task Volume()
+        public async Task Volume(ushort vol)
         {
             var voiceState = Context.User as IVoiceState;
             if (voiceState?.VoiceChannel == null)
@@ -402,7 +402,12 @@ namespace EssentiBot.Modules
                 return;
             }
 
-            //todo volume up and down
+            if(vol > 150 || vol <= 2)
+            {
+                await Context.Channel.SendErrorAsync("Error!", "Please use a number between 2 - 150");
+            }
+            await player.UpdateVolumeAsync(vol);
+            await Context.Channel.SendSuccessAsync("Success!", $"Volume set to {vol}!");
         }
     }
 }
