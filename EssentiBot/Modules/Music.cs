@@ -405,6 +405,7 @@ namespace EssentiBot.Modules
             if(vol > 150 || vol <= 2)
             {
                 await Context.Channel.SendErrorAsync("Error!", "Please use a number between 2 - 150");
+                return;
             }
             await player.UpdateVolumeAsync(vol);
             await Context.Channel.SendSuccessAsync("Success!", $"Volume set to {vol}!");
